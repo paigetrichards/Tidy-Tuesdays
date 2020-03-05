@@ -38,7 +38,7 @@ season_goals_nhl %>%
   dplyr::filter(status=='Active') -> wrangled_data_nhl
 ```
 
-```{r, ggridge practice}
+```{r, ggridge practice, fig.height=7, fig.width=6}
 wrangled_data_nhl %>%
   group_by(player)%>%
   mutate(mean_goals = mean(goals)) -> wrangled_data_nhl_2
@@ -47,7 +47,7 @@ ggplot(wrangled_data_nhl_2, aes(y=fct_reorder(player, goals), x=goals))+
   labs(y= 'Player',
        x= 'Goals')+
   scale_fill_viridis()+
-  theme(legend.position='none', plot.title = element_text(size = rel(2.8)), axis.title=element_text(size=rel(2)), axis.text= element_text(size=rel(1.5)), axis.ticks.length.x= unit(0.3, "cm"), axis.ticks.length.y=unit(0.3, 'cm'))-> ggridges_nhl_plot
+  theme(legend.position='none', plot.title = element_text(size = rel(2.8)), axis.title=element_text(size=rel(3)), axis.text= element_text(size=rel(1.5)), axis.ticks.length.x= unit(0.3, "cm"), axis.ticks.length.y=unit(0.3, 'cm'))-> ggridges_nhl_plot
 ggridges_nhl_plot
 ggsave('ggridges_nhl_plot.png', ggridges_nhl_plot,width = 5, height=7)
 ```
