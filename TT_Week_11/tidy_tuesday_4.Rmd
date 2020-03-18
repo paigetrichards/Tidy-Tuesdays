@@ -1,0 +1,43 @@
+---
+title: "Tidy Tuesday Week 11"
+author: "Paige Richards"
+date: "3/17/2020"
+output: 
+  html_document:
+          theme: readable
+          highlight: breezedark
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggalt)
+theme_set(theme_classic())
+```
+
+## Mid Salaries versus percent in STEM
+
+This week for my tidy tuesday, I wanted to try to ask a question with the dataset that I chose. I chose to look at the dataset with regards to salary potential. I decided to ask if in New Jersey there is any correlation between the percent of STEM students and the mid salary. From here, I wanted to learn a new skill which in this case was encircling some parts of the data! I also played around with the highlight of the YAML font of the Rmarkdown.
+ 
+```{r importing_data}
+read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-10/salary_potential.csv') -> salary
+salary
+```
+
+```{r wrangling}
+salary%>%
+  dplyr::filter(state_name == "New-Jersey") -> new_jersey_salary
+new_jersey_salary #looking at ONLY new jersey schools
+```
+
+```{r visualization, fig.width=10}
+ggplot(new_jersey_salary, aes(x=mid_career_pay, y= stem_percent))+
+  geom_point(aes(color=name))+
+  geom_encircle(data = subset(new_jersey_salary, stem_percent>= 45), color = "darkorchid4")+ #to do encircle, you need to specify the data subset! I chose greater than 45 percent. You need to specify the specific data frame that the variable
+  labs(y = "Percent STEM",
+       x= "Mid Career Salary",
+       color = "Institution Name") -> salary_plot
+ggsave('salary_plot.png', salary_plot,width = 10, height=5)
+salary_plot
+```
+
+I learned a lot from this week's Tidy Tuesday. I tried to ask a question of the data and interpret some things from it. I also wanted to learn how to encircle some of the datapoints. From research, I found a package known as ggalt which had a function known as encircle. From here, I wanted to only circle the data that had points greater than 45% (as a test). I was able to create a circle and customize the color of it to make it purple! It was exciting to ask a question and try to interpret some results from the data. If I were to make an inference from what I put here, I would say that it seems that the higher the percent, the higher the mid salaries are! I am not sure if I can make that conclusion with only three data points, but it was exciting to be able to try this out!
